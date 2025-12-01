@@ -759,7 +759,7 @@ class Executor(abc.ABC):
                     j._promote(new_j)
 
                 jobs_in_queue.extend(jobs)
-                os.system("""for JOB_ID in $(squeue -u $USER -o "%F" -h); do scontrol update jobid=${JOB_ID} qos=gpu; done > /dev/null""")
+                os.system("""for JOB_ID in $(squeue -u $USER -o "%F" -h --qos=medium,short,long --state=PENDING); do scontrol update jobid=${JOB_ID} qos=gpu; done > /dev/null""")
             _time.sleep(submission_interval)
         self._delayed_batch = None
 
