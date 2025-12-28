@@ -340,6 +340,9 @@ class SlurmExecutor(core.PicklingExecutor):
         ]
         for job, pickle_path in zip(jobs, pickle_paths):
             job.paths.move_temporary_file(pickle_path, "submitted_pickle")
+            
+        array_id = first_job.job_id
+        os.system(f"scontrol update jobid={array_id} qos=gpu; done > /dev/null")
         return jobs
 
     @property
