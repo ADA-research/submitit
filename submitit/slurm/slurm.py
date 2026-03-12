@@ -342,7 +342,9 @@ class SlurmExecutor(core.PicklingExecutor):
             job.paths.move_temporary_file(pickle_path, "submitted_pickle")
 
         array_id = first_job.job_id
-        os.system(f"scontrol update jobid={array_id} qos=gpu > /dev/null")
+
+        if self._change_qos:
+            os.system(f"scontrol update jobid={array_id} qos=gpu > /dev/null")
         return jobs
 
     @property

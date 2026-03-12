@@ -659,12 +659,13 @@ class Executor(abc.ABC):
 
     job_class: tp.Type[Job[tp.Any]] = Job
 
-    def __init__(self, folder: tp.Union[str, Path], parameters: tp.Optional[tp.Dict[str, tp.Any]] = None):
+    def __init__(self, folder: tp.Union[str, Path], parameters: tp.Optional[tp.Dict[str, tp.Any]] = None, change_qos=False):
         self.folder = Path(folder).expanduser().absolute()
         self.parameters = {} if parameters is None else parameters
         # storage for the batch context manager, for batch submissions:
         self._delayed_batch: tp.Optional[tp.List[tp.Tuple[Job[tp.Any], utils.DelayedSubmission]]] = None
         self._allow_implicit_submissions = False
+        self._change_qos = change_qos
 
     @classmethod
     def name(cls) -> str:
